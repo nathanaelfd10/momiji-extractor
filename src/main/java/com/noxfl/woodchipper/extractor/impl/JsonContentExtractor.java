@@ -1,7 +1,7 @@
 /**
  * 
  */
-package woodchipper.extractor.impl;
+package com.noxfl.woodchipper.extractor.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,8 +10,8 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
-import woodchipper.extractor.ContentExtractor;
-import woodchipper.extractor.ParsingGuide;
+import com.noxfl.woodchipper.extractor.ContentExtractor;
+import com.noxfl.woodchipper.extractor.Field;
 
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ class JsonContentExtractor implements ContentExtractor {
 
 	private final Configuration config = Configuration.defaultConfiguration();
 
-	public HashMap<String, Object> extract(String content, List<ParsingGuide> guides) {
+	public HashMap<String, Object> extract(String content, List<Field> guides) {
 
 		DocumentContext context = JsonPath.using(config).parse(content);
 

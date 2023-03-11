@@ -1,11 +1,10 @@
-package woodchipper.extractor.impl;
+package com.noxfl.woodchipper.extractor.impl;
 
+import com.noxfl.woodchipper.extractor.ContentExtractorFactory;
+import com.noxfl.woodchipper.extractor.ContentType;
+import com.noxfl.woodchipper.extractor.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import woodchipper.extractor.ContentExtractorFactory;
-import woodchipper.extractor.ContentType;
-import woodchipper.extractor.ParsingGuide;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,7 @@ public class ContextExtractoryFactoryImpl implements ContentExtractorFactory {
     private JsonContentExtractor jsonContentExtractorImpl;
 
     @Override
-    public HashMap<String, Object> extract(ContentType contentType, String content, List<ParsingGuide> guides) {
+    public HashMap<String, Object> extract(ContentType contentType, String content, List<Field> guides) {
 
         HashMap<String, Object> fields;
 

@@ -1,4 +1,4 @@
-package woodchipper;
+package com.noxfl.woodchipper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Bean;
 public class WoodChipperApplication {
 
 	@Bean
-	public Runner runner() {
-		return new Runner();
+	public WoodChipperTestRunner runner() {
+		return new WoodChipperTestRunner();
 	}
 
 	public static void main(String[] args) {

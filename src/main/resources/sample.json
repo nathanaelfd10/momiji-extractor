@@ -1,0 +1,34 @@
+{
+  "contentParsingGuide": [
+    {
+      "source": "product",
+      "contentType": "JSON",
+      "fields": [
+        {
+          "name": "name",
+          "path": "$.data.name"
+        },
+        {
+          "name": "price",
+          "path": "$.data.price"
+        },
+        {
+          "name": "description",
+          "path": "$.data.description"
+        },
+        {
+          "name": "seller_id",
+          "path": "$.data.seller_info.id"
+        },
+        {
+          "name": "seller_name",
+          "path": "$.data.seller_info_name"
+        },
+        {
+          "name": "rating",
+          "path": "$.data.rating"
+        }
+      ]
+    }
+  ]
+}

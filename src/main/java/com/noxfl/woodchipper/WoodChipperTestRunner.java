@@ -1,21 +1,16 @@
-package woodchipper;
+package com.noxfl.woodchipper;
 
-import net.minidev.json.JSONObject;
-import woodchipper.extractor.ContentExtractorFactory;
-import woodchipper.extractor.ContentType;
-import woodchipper.extractor.ParsingGuide;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.Configuration;
+import com.noxfl.woodchipper.extractor.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class Runner implements CommandLineRunner {
+public class WoodChipperTestRunner implements CommandLineRunner {
 
     private ConfigurableApplicationContext configurableApplicationContext;
 
@@ -31,6 +26,15 @@ public class Runner implements CommandLineRunner {
         this.contentExtractorFactory = contentExtractorFactory;
     }
 
+//    public List<ContentParsingGuide> parseParsingGuides(String job) throws JsonProcessingException {
+//        DocumentContext context = JsonPath.using(config).parse(job);
+//
+//        Job job = new ObjectMapper().readValue(job, Job.class);
+//
+//        List<ContentParsingGuide> contentParsingGuides = Arrays.asList(guides);
+//
+//        return contentParsingGuides;
+//    }
 
     @Override
     public void run(String... args) throws Exception {
@@ -48,6 +52,8 @@ public class Runner implements CommandLineRunner {
                 "   }\n" +
                 "  }\n" +
                 "}";
+
+        System.out.println(jsonString);
 
         ContentType contentType = ContentType.JSON;
 
