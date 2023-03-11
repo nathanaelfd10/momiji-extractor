@@ -1,9 +1,10 @@
-package com.noxfl.momijileafrake;
+package woodchipper;
 
-import com.noxfl.momijileafrake.extractor.ContentExtractorFactory;
-import com.noxfl.momijileafrake.extractor.ContentType;
-import com.noxfl.momijileafrake.extractor.ParsingGuide;
 import net.minidev.json.JSONObject;
+import woodchipper.extractor.ContentExtractorFactory;
+import woodchipper.extractor.ContentType;
+import woodchipper.extractor.ParsingGuide;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ConfigurableApplicationContext;

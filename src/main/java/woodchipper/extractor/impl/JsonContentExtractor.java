@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.noxfl.momijileafrake.extractor.impl;
+package woodchipper.extractor.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +9,10 @@ import java.util.List;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import com.noxfl.momijileafrake.extractor.ContentExtractor;
-import com.noxfl.momijileafrake.extractor.ParsingGuide;
+
+import woodchipper.extractor.ContentExtractor;
+import woodchipper.extractor.ParsingGuide;
+
 import org.springframework.stereotype.Component;
 
 /**

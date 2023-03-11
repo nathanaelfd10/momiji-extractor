@@ -1,4 +1,4 @@
-package com.noxfl.momijileafrake;
+package woodchipper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
-public class MomijiLeafRakeApplication {
+public class WoodChipperApplication {
 
 	@Bean
 	public Runner runner() {
@@ -14,7 +14,7 @@ public class MomijiLeafRakeApplication {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(MomijiLeafRakeApplication.class, args);
+		SpringApplication.run(WoodChipperApplication.class, args);
 	}
 
 }

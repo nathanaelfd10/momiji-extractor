@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.noxfl.momijileafrake.extractor;
+package woodchipper.extractor;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

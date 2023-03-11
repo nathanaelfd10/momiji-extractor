@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.noxfl.momijileafrake.extractor;
+package woodchipper.extractor;
 
 /**
  * @author Fernando Nathanael

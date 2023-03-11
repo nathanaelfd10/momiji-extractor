@@ -1,10 +1,11 @@
-package com.noxfl.momijileafrake.extractor.impl;
+package woodchipper.extractor.impl;
 
-import com.noxfl.momijileafrake.extractor.ContentExtractorFactory;
-import com.noxfl.momijileafrake.extractor.ContentType;
-import com.noxfl.momijileafrake.extractor.ParsingGuide;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import woodchipper.extractor.ContentExtractorFactory;
+import woodchipper.extractor.ContentType;
+import woodchipper.extractor.ParsingGuide;
 
 import java.util.HashMap;
 import java.util.List;

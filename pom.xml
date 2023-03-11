@@ -10,7 +10,7 @@
 	<groupId>com.noxfl</groupId>
 	<artifactId>momiji-leaf-rake</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>momiji-leaf-rake</name>
+	<name>momiji-wood-chipper</name>
 	<description>Data extractor service for Momiji Crawler System</description>
 	<properties>
 		<java.version>19</java.version>
