@@ -18,7 +18,7 @@ import lombok.Setter;
 @Setter
 public class Field {
 	
-	String name;
-	String path;
+	private String name;
+	private String path;
 
 }

@@ -13,6 +13,6 @@ public class ContentParsingGuide {
 
     private String source;
     private ContentType contentType;
-    List<Field> fields;
+    private List<Field> fields;
 
 }

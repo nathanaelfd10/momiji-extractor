@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class Job {
 
-    List<ContentParsingGuide> contentParsingGuides;
-    List<Content> contents;
+    private List<ContentParsingGuide> contentParsingGuides;
+    private List<Content> contents;
 
 }
