@@ -1,17 +1,19 @@
-package com.noxfl.woodchipper.extractor;
-
+package com.noxfl.woodchipper.schema;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class MomijiMessage {
+public class Job {
 
-    private Job job;
+    List<ContentParsingGuide> contentParsingGuides;
+    List<Content> contents;
 
 }

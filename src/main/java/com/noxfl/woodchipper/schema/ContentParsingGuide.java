@@ -1,4 +1,4 @@
-package com.noxfl.woodchipper.extractor;
+package com.noxfl.woodchipper.schema;
 
 import lombok.*;
 

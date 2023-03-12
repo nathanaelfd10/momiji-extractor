@@ -8,7 +8,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.noxfl.woodchipper.extractor.ContentExtractor;
-import com.noxfl.woodchipper.extractor.Field;
+import com.noxfl.woodchipper.schema.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,11 +1,9 @@
 package com.noxfl.woodchipper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.Configuration;
 import com.noxfl.woodchipper.extractor.*;
 
+import com.noxfl.woodchipper.schema.ContentType;
+import com.noxfl.woodchipper.schema.Field;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

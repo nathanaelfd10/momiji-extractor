@@ -1,7 +1,6 @@
 package com.noxfl.woodchipper.extractor;
 
-import java.util.HashMap;
-import java.util.List;
+import com.noxfl.woodchipper.schema.ContentType;
 
 public interface ContentExtractorFactory {
 

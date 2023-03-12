@@ -3,6 +3,8 @@
  */
 package com.noxfl.woodchipper.extractor;
 
+import com.noxfl.woodchipper.schema.Field;
+
 import java.util.HashMap;
 import java.util.List;
 

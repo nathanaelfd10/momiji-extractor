@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.noxfl.woodchipper.extractor;
+package com.noxfl.woodchipper.schema;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

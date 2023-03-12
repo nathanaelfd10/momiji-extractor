@@ -2,13 +2,9 @@ package com.noxfl.woodchipper.extractor.impl;
 
 import com.noxfl.woodchipper.extractor.ContentExtractor;
 import com.noxfl.woodchipper.extractor.ContentExtractorFactory;
-import com.noxfl.woodchipper.extractor.ContentType;
-import com.noxfl.woodchipper.extractor.Field;
+import com.noxfl.woodchipper.schema.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.List;
 
 @Component
 public class ContextExtractoryFactoryImpl implements ContentExtractorFactory {
