@@ -3,7 +3,10 @@
  */
 package com.noxfl.woodchipper.amqp;
 
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.ParseContext;
 import org.springframework.amqp.core.Queue;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,6 +31,12 @@ public class WoodChipperConfiguration {
 	@Bean
 	public AmqpHandler amqpHandler() {
 		return new AmqpHandler();
+	}
+
+	@Bean
+	public ParseContext parseContext() {
+		com.jayway.jsonpath.Configuration configuration = com.jayway.jsonpath.Configuration.defaultConfiguration();
+		return JsonPath.using(configuration);
 	}
 	
 }
