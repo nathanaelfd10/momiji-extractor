@@ -6,9 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.noxfl.woodchipper.extractor.*;
 
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WoodChipperTestRunner implements CommandLineRunner {
 
@@ -39,6 +45,8 @@ public class WoodChipperTestRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        System.out.println("Test runner running..");
+
         String jsonString = "{\n" +
                 " \"status\": 200,\n" +
                 " \"data\": {\n" +
@@ -57,16 +65,16 @@ public class WoodChipperTestRunner implements CommandLineRunner {
 
         ContentType contentType = ContentType.JSON;
 
-        List<ParsingGuide> parsingGuides = new ArrayList<>();
+        List<Field> parsingGuides = new ArrayList<>();
 
-        parsingGuides.add(new ParsingGuide("name", Integer.class, "$.data.name"));
-        parsingGuides.add(new ParsingGuide("price", Integer.class, "$.data.price"));
-        parsingGuides.add(new ParsingGuide("description", Integer.class, "$.data.description"));
-        parsingGuides.add(new ParsingGuide("seller_id", Integer.class, "$.data.seller_info.id"));
-        parsingGuides.add(new ParsingGuide("seller_name", Integer.class, "$.data.seller_info.name"));
-        parsingGuides.add(new ParsingGuide("seller_rating", Integer.class, "$.data.seller_info.rating"));
+        parsingGuides.add(new Field("name", "$.data.name"));
+        parsingGuides.add(new Field("price", "$.data.price"));
+        parsingGuides.add(new Field("description", "$.data.description"));
+        parsingGuides.add(new Field("seller_id", "$.data.seller_info.id"));
+        parsingGuides.add(new Field("seller_name", "$.data.seller_info.name"));
+        parsingGuides.add(new Field("seller_rating", "$.data.seller_info.rating"));
 
-        HashMap<String, Object> fields = contentExtractorFactory.extract(contentType, jsonString, parsingGuides);
+        HashMap<String, Object> fields = contentExtractorFactory.getContentExtractor(contentType).extract(jsonString, parsingGuides);
 
         for(Map.Entry<String, Object> field : fields.entrySet()) {
             String name = field.getKey();

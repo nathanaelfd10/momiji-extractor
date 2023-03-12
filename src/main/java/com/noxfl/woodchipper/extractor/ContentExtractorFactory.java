@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface ContentExtractorFactory {
 
-    public HashMap<String, Object> extract(ContentType contentType, String content, List<Field> guides);
+    public ContentExtractor getContentExtractor(ContentType contentType);
 
 }

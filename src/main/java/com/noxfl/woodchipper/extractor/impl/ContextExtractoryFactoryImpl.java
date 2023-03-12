@@ -1,5 +1,6 @@
 package com.noxfl.woodchipper.extractor.impl;
 
+import com.noxfl.woodchipper.extractor.ContentExtractor;
 import com.noxfl.woodchipper.extractor.ContentExtractorFactory;
 import com.noxfl.woodchipper.extractor.ContentType;
 import com.noxfl.woodchipper.extractor.Field;
@@ -16,21 +17,13 @@ public class ContextExtractoryFactoryImpl implements ContentExtractorFactory {
     private JsonContentExtractor jsonContentExtractorImpl;
 
     @Override
-    public HashMap<String, Object> extract(ContentType contentType, String content, List<Field> guides) {
-
-        HashMap<String, Object> fields;
-
+    public ContentExtractor getContentExtractor(ContentType contentType) {
         switch (contentType) {
             case JSON -> {
-                fields = jsonContentExtractorImpl.extract(content, guides);
-                return fields;
+                return jsonContentExtractorImpl;
             }
-            default -> {
-                throw new IllegalArgumentException(
-                        "No processing function available for content type: " + contentType.toString());
-            }
+            default -> throw new IllegalArgumentException("No processing function available for content type: " + contentType.toString());
         }
-
     }
 
 }
