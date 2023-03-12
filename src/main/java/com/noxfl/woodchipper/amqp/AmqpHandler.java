@@ -15,7 +15,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,7 @@ import java.util.Optional;
  * @author Fernando Nathanael
  *
  */
-public class RmqReceiver {
+public class AmqpHandler {
 
 	public static final boolean IS_SOURCE_NAME_CASE_SENSITIVE = true;
 
@@ -68,7 +67,7 @@ public class RmqReceiver {
 //	}
 
 	@RabbitHandler
-	@RabbitListener(queues = WoodChipperConfiguration.WOOD_CHIPPER_QUEUE_NAME)
+	@RabbitListener(queues = WoodChipperConfiguration.INPUT_QUEUE_NAME)
 	public void receive(String message) throws JsonProcessingException, NoSuchFieldException {
 
 		MomijiMessage momijiMessage = parseMessage(message);
@@ -104,12 +103,8 @@ public class RmqReceiver {
 
 		System.out.println(extractedFieldsAsJson.toString());
 
-		send(extractedFieldsAsJson.toString());
+		template.convertAndSend(WoodChipperConfiguration.OUTPUT_QUEUE_NAME, extractedFieldsAsJson.toString());
 
-	}
-
-	public void send(String message) {
-		template.convertAndSend("next", message);
 	}
 
 }

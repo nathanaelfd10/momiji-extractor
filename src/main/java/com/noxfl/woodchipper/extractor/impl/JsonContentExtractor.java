@@ -5,6 +5,7 @@ package com.noxfl.woodchipper.extractor.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
@@ -29,18 +30,12 @@ class JsonContentExtractor implements ContentExtractor {
 
 		DocumentContext context = JsonPath.using(config).parse(content);
 
-		HashMap<String, Object> fields = new HashMap<>();
-
-		for (var guide : guides) {
-			String name = guide.getName();
-			String path = guide.getPath();
-
-			Object value = context.read(path);
-
-			fields.put(name, value);
-		}
-
-		return fields;
+		return (HashMap<String, Object>) guides
+				.stream()
+				.collect(Collectors.toMap(
+						Field::getName, // Key (Field name)
+						guide -> context.read(guide.getPath()) // Value (Field value)
+				));
 	}
 
 }

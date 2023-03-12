@@ -4,7 +4,6 @@
 package com.noxfl.woodchipper.amqp;
 
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,18 +14,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class WoodChipperConfiguration {
 
-	public static final String WOOD_CHIPPER_QUEUE_NAME = "wood-chipper";
+	public static final String INPUT_QUEUE_NAME = "wood-chipper";
+
+	public static final String OUTPUT_QUEUE_NAME = "next";
 
 	@Bean
 	public Queue hello() {
-		System.out.println("Reading from queue name: " + WOOD_CHIPPER_QUEUE_NAME);
+		System.out.println("Reading from queue name: " + INPUT_QUEUE_NAME);
 
-		return new Queue(WOOD_CHIPPER_QUEUE_NAME);
+		return new Queue(INPUT_QUEUE_NAME);
 	}
 
 	@Bean
-	public RmqReceiver amqpHandler() {
-		return new RmqReceiver();
+	public AmqpHandler amqpHandler() {
+		return new AmqpHandler();
 	}
 	
 }
