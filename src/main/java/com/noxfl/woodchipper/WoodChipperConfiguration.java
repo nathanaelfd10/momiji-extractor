@@ -1,10 +1,11 @@
 /**
  * 
  */
-package com.noxfl.woodchipper.amqp;
+package com.noxfl.woodchipper;
 
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
+import com.noxfl.woodchipper.amqp.AmqpHandler;
 import org.springframework.amqp.core.Queue;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;

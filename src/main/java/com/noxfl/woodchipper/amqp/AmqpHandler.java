@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
+import com.noxfl.woodchipper.WoodChipperConfiguration;
 import com.noxfl.woodchipper.extractor.*;
 import net.minidev.json.JSONObject;
 import org.springframework.amqp.core.Queue;
