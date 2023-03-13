@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.noxfl.woodchipper.amqp;
 
@@ -29,35 +29,51 @@ import java.util.Optional;
  */
 public class AmqpHandler {
 
-	private RabbitTemplate template;
+    private RabbitTemplate template;
 
-	@Autowired
-	public void setTemplate(RabbitTemplate template) {
-		this.template = template;
-	}
+    @Autowired
+    public void setTemplate(RabbitTemplate template) {
+        this.template = template;
+    }
 
-	private Queue queue;
+    private Queue queue;
 
-	@Autowired
-	public void setQueue(Queue queue) {
-		this.queue = queue;
-	}
+    @Autowired
+    public void setQueue(Queue queue) {
+        this.queue = queue;
+    }
 
-	private MessageHandler messageHandler;
+    private MessageHandler messageHandler;
 
-	@Autowired
-	public void setMessageHandler(MessageHandler messageHandler) {
-		this.messageHandler = messageHandler;
-	}
+    @Autowired
+    public void setMessageHandler(MessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
+    }
 
+    @RabbitHandler
+    @RabbitListener(queues = WoodChipperConfiguration.INPUT_QUEUE_NAME)
+    public void receive(String message) throws JsonProcessingException, NoSuchFieldException {
 
-	@RabbitHandler
-	@RabbitListener(queues = WoodChipperConfiguration.INPUT_QUEUE_NAME)
-	public void receive(String message) throws JsonProcessingException, NoSuchFieldException {
+        try {
 
-		String output = messageHandler.handle(message);
+            String output = messageHandler.handle(message);
 
-		template.convertAndSend(WoodChipperConfiguration.OUTPUT_QUEUE_NAME);
-	}
+            template.convertAndSend(WoodChipperConfiguration.OUTPUT_QUEUE_NAME, output);
+
+        } catch (NoSuchFieldException exception) {
+
+            HashMap<String, String> failMessage = new HashMap<>();
+
+            failMessage.put("message", message);
+            failMessage.put("error", exception.toString());
+
+            JSONObject failMessageJson = new JSONObject(failMessage);
+
+            template.convertAndSend(WoodChipperConfiguration.OUTPUT_FAIL_QUEUE_NAME, failMessageJson.toString());
+
+            throw new RuntimeException();
+
+        }
+    }
 
 }

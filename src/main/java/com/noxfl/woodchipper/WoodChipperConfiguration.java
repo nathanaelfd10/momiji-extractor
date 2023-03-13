@@ -22,6 +22,8 @@ public class WoodChipperConfiguration {
 
 	public static final String OUTPUT_QUEUE_NAME = "next";
 
+	public static final String OUTPUT_FAIL_QUEUE_NAME = "wood-chipper-fail";
+
 	@Bean
 	public Queue hello() {
 		System.out.println("Reading from queue name: " + INPUT_QUEUE_NAME);
