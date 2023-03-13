@@ -29,15 +29,6 @@ import java.util.Optional;
  */
 public class AmqpHandler {
 
-	public static final boolean IS_SOURCE_NAME_CASE_SENSITIVE = true;
-
-	private ContentExtractorFactory contentExtractorFactory;
-
-	@Autowired
-	public void setContentExtractorFactory(ContentExtractorFactory contentExtractorFactory) {
-		this.contentExtractorFactory = contentExtractorFactory;
-	}
-
 	private RabbitTemplate template;
 
 	@Autowired
@@ -52,63 +43,21 @@ public class AmqpHandler {
 		this.queue = queue;
 	}
 
-	private final Configuration config = Configuration.defaultConfiguration();
+	private MessageHandler messageHandler;
 
-	public MomijiMessage parseMessage(String message) throws JsonProcessingException {
-
-		ObjectMapper objectMapper = new ObjectMapper()
-				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-		MomijiMessage momijiMessage = objectMapper.readValue(message, MomijiMessage.class);
-
-		return momijiMessage;
+	@Autowired
+	public void setMessageHandler(MessageHandler messageHandler) {
+		this.messageHandler = messageHandler;
 	}
 
-//	@RabbitHandler
-//	@RabbitListener(queues = WoodChipperConfiguration.WOOD_CHIPPER_QUEUE_NAME)
-//	public void receive(String message) {
-//		System.out.println(message);
-//	}
 
 	@RabbitHandler
 	@RabbitListener(queues = WoodChipperConfiguration.INPUT_QUEUE_NAME)
 	public void receive(String message) throws JsonProcessingException, NoSuchFieldException {
 
-		MomijiMessage momijiMessage = parseMessage(message);
+		String output = messageHandler.handle(message);
 
-		HashMap<String, Object> extractedFields = new HashMap<>();
-
-		for(var guide : momijiMessage.getJob().getContentParsingGuides()) {
-			String sourceName = guide.getSource();
-
-			List<Field> fields = guide.getFields();
-
-			List<Content> availableContents = momijiMessage.getJob().getContents();
-
-			Optional<Content> foundContent = availableContents.stream()
-					.filter(ctn ->
-							IS_SOURCE_NAME_CASE_SENSITIVE
-									? ctn.getName().equals(sourceName) // Case sensitive if true
-									: ctn.getName().equalsIgnoreCase(sourceName) // Ignores case if false
-					)
-					.findFirst();
-
-			if(foundContent.isEmpty()) throw new NoSuchFieldException("No content with such name: " + sourceName);
-
-			Content content = foundContent.get();
-
-			HashMap<String, Object> outputFields = contentExtractorFactory.getContentExtractor(content.getContentType()).extract(content.getContent(), fields);
-
-			extractedFields.putAll(outputFields);
-
-		}
-
-		JSONObject extractedFieldsAsJson = new JSONObject(extractedFields);
-
-		System.out.println(extractedFieldsAsJson.toString());
-
-		template.convertAndSend(WoodChipperConfiguration.OUTPUT_QUEUE_NAME, extractedFieldsAsJson.toString());
-
+		template.convertAndSend(WoodChipperConfiguration.OUTPUT_QUEUE_NAME);
 	}
 
 }
