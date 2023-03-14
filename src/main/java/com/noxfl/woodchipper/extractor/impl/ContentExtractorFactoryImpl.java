@@ -18,7 +18,7 @@ public class ContentExtractorFactoryImpl implements ContentExtractorFactory {
             case JSON -> {
                 return jsonContentExtractorImpl;
             }
-            default -> throw new IllegalArgumentException("No processing function available for content type: " + contentType.toString());
+            default -> throw new IllegalArgumentException("No processing function available for content type: " + contentType);
         }
     }
 
