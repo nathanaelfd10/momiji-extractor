@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ContentExtractoryFactoryImpl implements ContentExtractorFactory {
+public class ContentExtractorFactoryImpl implements ContentExtractorFactory {
 
     @Autowired
     private JsonContentExtractor jsonContentExtractorImpl;
