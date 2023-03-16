@@ -35,14 +35,7 @@ public class AmqpHandler {
     public void setTemplate(RabbitTemplate template) {
         this.template = template;
     }
-
-    private Queue queue;
-
-    @Autowired
-    public void setQueue(Queue queue) {
-        this.queue = queue;
-    }
-
+    
     private MessageHandler messageHandler;
 
     @Autowired
