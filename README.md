@@ -1,7 +1,7 @@
 # momiji-wood-chipper
 
 Momiji Crawler System is a series of interconnected services which primary purpose is to obtain data from ecommerce websites.
-Momiji Wood Chipper is a part of microservices that makes Momiji Crawler System. This service is mainly responsible for extracting data from crawler services. To decouple these services, our crawler system is using RabbitMQ message boker to pass messages between services.
+Momiji Wood Chipper is a part of services that makes Momiji Crawler System. This service is mainly responsible for extracting data from crawler services. To decouple these services, our crawler system is using RabbitMQ message boker to pass messages between services.
 
 
 ## Using technologies:
