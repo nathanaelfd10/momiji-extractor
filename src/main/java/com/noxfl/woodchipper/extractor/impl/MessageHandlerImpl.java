@@ -44,10 +44,10 @@ public class MessageHandlerImpl implements MessageHandler {
             List<Content> availableContents = momijiMessage.getJob().getContents();
 
             Optional<Content> foundContent = availableContents.stream()
-                    .filter(ctn ->
+                    .filter(content ->
                             IS_SOURCE_NAME_CASE_SENSITIVE
-                                    ? ctn.getName().equals(sourceName) // Case sensitive if true
-                                    : ctn.getName().equalsIgnoreCase(sourceName) // Ignores case if false
+                                    ? content.getName().equals(sourceName) // Case sensitive if true
+                                    : content.getName().equalsIgnoreCase(sourceName) // Ignores case if false
                     )
                     .findFirst();
 
