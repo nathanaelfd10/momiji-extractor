@@ -27,13 +27,6 @@ class JsonContentExtractor implements ContentExtractor {
     public static final boolean IS_ADD_UTC_TIMESTAMP = true;
     private final Configuration config = Configuration.defaultConfiguration();
 
-    private ParseContext parseContext;
-
-    @Autowired
-    public void setParseContext(ParseContext parseContext) {
-        this.parseContext = parseContext;
-    }
-
     public HashMap<String, Object> extract(String content, List<Field> guides) {
 
         DocumentContext context = JsonPath.using(config).parse(content);
