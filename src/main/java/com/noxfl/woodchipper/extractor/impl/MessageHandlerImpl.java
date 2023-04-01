@@ -4,18 +4,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
+import com.noxfl.woodchipper.WoodChipperConfiguration;
 import com.noxfl.woodchipper.extractor.ContentExtractorFactory;
 import com.noxfl.woodchipper.extractor.MessageHandler;
+import com.noxfl.woodchipper.messaging.cloudpubsub.MessagePublisher;
 import com.noxfl.woodchipper.schema.Content;
 import com.noxfl.woodchipper.schema.Field;
 import com.noxfl.woodchipper.schema.MomijiMessage;
 import net.minidev.json.JSONObject;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 @Component
 public class MessageHandlerImpl implements MessageHandler {
@@ -31,8 +36,17 @@ public class MessageHandlerImpl implements MessageHandler {
 
     private final Configuration config = Configuration.defaultConfiguration();
 
+    private MessagePublisher messagePublisher;
+
+    @Autowired
+    public void setMessagePublisher(MessagePublisher messagePublisher) {
+        this.messagePublisher = messagePublisher;
+    }
+
     @Override
-    public String handle(MomijiMessage momijiMessage) throws NoSuchFieldException {
+    public void handle(String message) throws NoSuchFieldException, IOException, ExecutionException, InterruptedException {
+
+        MomijiMessage momijiMessage = parseMessage(message);
 
         HashMap<String, Object> extractedFields = new HashMap<>();
 
@@ -55,25 +69,22 @@ public class MessageHandlerImpl implements MessageHandler {
 
             Content content = foundContent.get();
 
-            HashMap<String, Object> outputFields = contentExtractorFactory.getContentExtractor(content.getContentType()).extract(content.getContent(), fields);
+            HashMap<String, Object> outputFields = contentExtractorFactory
+                    .getContentExtractor(content.getContentType())
+                    .extract(content.getContent(), fields);
 
             extractedFields.putAll(outputFields);
 
         }
 
-        JSONObject extractedFieldsJson = new JSONObject(extractedFields);
+        extractedFields.entrySet().forEach(System.out::println);
 
-        return new JSONObject(extractedFieldsJson).toString();
+        String output = new ObjectMapper().writeValueAsString(extractedFields);
+
+        messagePublisher.send(output);
     }
 
-    @Override
-    public String handle(String message) throws NoSuchFieldException, JsonProcessingException {
-        MomijiMessage momijiMessage = parseMessage(message);
-
-        return handle(momijiMessage);
-    }
-
-    public MomijiMessage parseMessage(String message) throws JsonProcessingException {
+    public static MomijiMessage parseMessage(String message) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

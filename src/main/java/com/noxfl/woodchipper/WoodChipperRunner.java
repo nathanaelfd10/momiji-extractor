@@ -15,7 +15,7 @@ public class WoodChipperRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        int durationMs = 1200000;
+        int durationMs = 900000;
         String message = String.format("Running for %sms (%s seconds/%s minutes)", durationMs, durationMs / 1000, durationMs / 6000);
         System.out.println(message);
         Thread.sleep(durationMs);

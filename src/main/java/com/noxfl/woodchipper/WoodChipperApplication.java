@@ -1,8 +1,11 @@
 package com.noxfl.woodchipper;
 
+import com.google.cloud.pubsub.v1.Publisher;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
+import com.noxfl.woodchipper.messaging.cloudpubsub.MessagePublisher;
+import com.noxfl.woodchipper.messaging.cloudpubsub.impl.MessagePublisherImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -23,6 +26,13 @@ public class WoodChipperApplication {
 	@Profile("!test-runner")
 	@Bean
 	public WoodChipperRunner runner() { return new WoodChipperRunner(); }
+
+	@Bean
+	public MessagePublisher messagePublisher() {
+		final String projectId = System.getProperty("projectId");
+		final String topicId = System.getProperty("topicId");
+		return new MessagePublisherImpl(projectId, topicId);
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(WoodChipperApplication.class, args);

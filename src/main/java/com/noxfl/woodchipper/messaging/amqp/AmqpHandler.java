@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.noxfl.woodchipper.amqp;
+package com.noxfl.woodchipper.messaging.amqp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -19,9 +19,11 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Fernando Nathanael
@@ -29,13 +31,6 @@ import java.util.Optional;
  */
 public class AmqpHandler {
 
-    private RabbitTemplate template;
-
-    @Autowired
-    public void setTemplate(RabbitTemplate template) {
-        this.template = template;
-    }
-    
     private MessageHandler messageHandler;
 
     @Autowired
@@ -45,28 +40,28 @@ public class AmqpHandler {
 
     @RabbitHandler
     @RabbitListener(queues = WoodChipperConfiguration.INPUT_QUEUE_NAME)
-    public void receive(String message) throws JsonProcessingException, NoSuchFieldException {
+    public void receive(String message) throws IOException, NoSuchFieldException, ExecutionException, InterruptedException {
 
-        try {
+//        try {
 
-            String output = messageHandler.handle(message);
+        System.out.println("[*] Received new message");
 
-            template.convertAndSend(WoodChipperConfiguration.OUTPUT_QUEUE_NAME, output);
+        messageHandler.handle(message);
 
-        } catch (NoSuchFieldException exception) {
+//        } catch (NoSuchFieldException exception) {
 
-            HashMap<String, String> failMessage = new HashMap<>();
+//            HashMap<String, String> failMessage = new HashMap<>();
+//
+//            failMessage.put("message", message);
+//            failMessage.put("error", exception.toString());
+//
+//            JSONObject failMessageJson = new JSONObject(failMessage);
+//
+//            template.convertAndSend(WoodChipperConfiguration.OUTPUT_FAIL_QUEUE_NAME, failMessageJson.toString());
+//
+//            throw new RuntimeException();
 
-            failMessage.put("message", message);
-            failMessage.put("error", exception.toString());
-
-            JSONObject failMessageJson = new JSONObject(failMessage);
-
-            template.convertAndSend(WoodChipperConfiguration.OUTPUT_FAIL_QUEUE_NAME, failMessageJson.toString());
-
-            throw new RuntimeException();
-
-        }
+//        }
     }
 
 }
