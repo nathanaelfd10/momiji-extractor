@@ -6,11 +6,7 @@ package com.noxfl.woodchipper.extractor.impl;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.ParseContext;
-import com.noxfl.woodchipper.extractor.ContentExtractor;
 import com.noxfl.woodchipper.schema.Field;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -21,8 +17,9 @@ import java.util.stream.Collectors;
  * @author Fernando Nathanael
  *
  */
-@Component
-class JsonContentExtractor implements ContentExtractor {
+//@Component
+@Deprecated
+class JsonContentExtractor {
 
     public static final boolean IS_ADD_UTC_TIMESTAMP = true;
     private final Configuration config = Configuration.defaultConfiguration();

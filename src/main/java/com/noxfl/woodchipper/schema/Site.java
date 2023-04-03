@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.noxfl.woodchipper.schema;
 
 import lombok.AllArgsConstructor;
@@ -5,16 +8,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
+/**
+ * @author Fernando Nathanael
+ *
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Content {
+public class Site {
 
-    String url;
-    String product;
-    List<ExtraContent> extra;
+	private String id;
+	private String name;
+	private String baseUrl;
 
 }

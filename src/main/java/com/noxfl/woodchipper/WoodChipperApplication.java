@@ -1,9 +1,5 @@
 package com.noxfl.woodchipper;
 
-import com.google.cloud.pubsub.v1.Publisher;
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.ParseContext;
 import com.noxfl.woodchipper.messaging.cloudpubsub.MessagePublisher;
 import com.noxfl.woodchipper.messaging.cloudpubsub.impl.MessagePublisherImpl;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +32,8 @@ public class WoodChipperApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WoodChipperApplication.class, args);
+//		if(WoodChipperConfiguration.IS_PRINT_ONLY)
+//			System.out.println("Not publishing to Cloud Pub/Sub because --print-only argument has been detected.");
 	}
 
 }

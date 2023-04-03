@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.noxfl.woodchipper.schema;
 
 import lombok.AllArgsConstructor;
@@ -7,14 +10,19 @@ import lombok.Setter;
 
 import java.util.List;
 
-@NoArgsConstructor
+/**
+ * @author Fernando Nathanael
+ *
+ */
+
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class Content {
+public class Category {
 
-    String url;
-    String product;
-    List<ExtraContent> extra;
+	private String id;
+	private String url;
+	private List<String> categoryBreadcrumb;
 
 }

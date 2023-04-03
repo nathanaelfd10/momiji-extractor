@@ -13,6 +13,16 @@ import java.util.List;
 @Setter
 public class Job {
 
+    private String name;
+    private Site site;
+    private Category category;
+    private String targetUrl;
+    private PageType pageType;
+    private int minPage;
+    private int maxPage;
+    private FormatType formatType;
+    private String splitPath;
+    private boolean scrapeDetail;
     private List<ContentParsingGuide> contentParsingGuides;
     private List<Content> contents;
 

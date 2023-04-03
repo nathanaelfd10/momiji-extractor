@@ -3,86 +3,112 @@ package com.noxfl.woodchipper.extractor.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.Configuration;
 import com.noxfl.woodchipper.WoodChipperConfiguration;
-import com.noxfl.woodchipper.extractor.ContentExtractorFactory;
+import com.noxfl.woodchipper.extractor.SiteContentExtractorFactory;
 import com.noxfl.woodchipper.extractor.MessageHandler;
+import com.noxfl.woodchipper.extractor.SiteContentType;
 import com.noxfl.woodchipper.messaging.cloudpubsub.MessagePublisher;
-import com.noxfl.woodchipper.schema.Content;
-import com.noxfl.woodchipper.schema.Field;
-import com.noxfl.woodchipper.schema.MomijiMessage;
-import net.minidev.json.JSONObject;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import com.noxfl.woodchipper.schema.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Component
 public class MessageHandlerImpl implements MessageHandler {
 
-    public static final boolean IS_SOURCE_NAME_CASE_SENSITIVE = true;
+    private final MessagePublisher messagePublisher;
 
-    private ContentExtractorFactory contentExtractorFactory;
+    private final SiteContentExtractorFactory siteContentExtractorFactory;
 
     @Autowired
-    public void setContentExtractorFactory(ContentExtractorFactory contentExtractorFactory) {
-        this.contentExtractorFactory = contentExtractorFactory;
+    public MessageHandlerImpl(MessagePublisher messagePublisher, SiteContentExtractorFactory siteContentExtractorFactory) {
+        this.messagePublisher = messagePublisher;
+        this.siteContentExtractorFactory = siteContentExtractorFactory;
     }
 
-    private final Configuration config = Configuration.defaultConfiguration();
+    private SiteContentType getSiteContentType(String siteName, PageType pageType, FormatType formatType) {
+        // WARNING: Naming order is crucial.
+        // The naming in this app is: siteName + pageType + contentType.
+        String siteContentTypeString = Arrays.stream(new String[] { siteName, pageType.toString(), formatType.toString() })
+                .map(String::toUpperCase)
+                .collect(Collectors.joining("_"));
 
-    private MessagePublisher messagePublisher;
+        return SiteContentType.valueOf(siteContentTypeString);
+    }
 
-    @Autowired
-    public void setMessagePublisher(MessagePublisher messagePublisher) {
-        this.messagePublisher = messagePublisher;
+    private String hashMapToString(HashMap<String, Object> fields) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(fields);
     }
 
     @Override
-    public void handle(String message) throws NoSuchFieldException, IOException, ExecutionException, InterruptedException {
+    public void handle(String message) throws IOException, ExecutionException, InterruptedException {
 
         MomijiMessage momijiMessage = parseMessage(message);
 
-        HashMap<String, Object> extractedFields = new HashMap<>();
+        Job job = momijiMessage.getJob();
 
-        for(var guide : momijiMessage.getJob().getContentParsingGuides()) {
-            String sourceName = guide.getSource();
+        SiteContentType siteContentType = getSiteContentType(
+                job.getSite().getName(),
+                job.getPageType(),
+                job.getFormatType()
+        );
 
-            List<Field> fields = guide.getFields();
+        HashMap<String, Object> outputFields = siteContentExtractorFactory
+                .getContentExtractor(siteContentType)
+                .extract("content here"); // TODO
 
-            List<Content> availableContents = momijiMessage.getJob().getContents();
+        // TODO Add functions for extra fields
 
-            Optional<Content> foundContent = availableContents.stream()
-                    .filter(content ->
-                            IS_SOURCE_NAME_CASE_SENSITIVE
-                                    ? content.getName().equals(sourceName) // Case sensitive if true
-                                    : content.getName().equalsIgnoreCase(sourceName) // Ignores case if false
-                    )
-                    .findFirst();
+        String outputMessage = hashMapToString(outputFields);
 
-            if(foundContent.isEmpty()) throw new NoSuchFieldException("No content with such name: " + sourceName);
-
-            Content content = foundContent.get();
-
-            HashMap<String, Object> outputFields = contentExtractorFactory
-                    .getContentExtractor(content.getContentType())
-                    .extract(content.getContent(), fields);
-
-            extractedFields.putAll(outputFields);
-
-        }
-
-        extractedFields.entrySet().forEach(System.out::println);
-
-        String output = new ObjectMapper().writeValueAsString(extractedFields);
-
-        messagePublisher.send(output);
+        if(!WoodChipperConfiguration.IS_RUN_DISCONNECTED) messagePublisher.send(outputMessage);
     }
+
+//    @Override
+//    public void handle(String message) throws NoSuchFieldException, IOException, ExecutionException, InterruptedException {
+//
+//        MomijiMessage momijiMessage = parseMessage(message);
+//
+//        HashMap<String, Object> extractedFields = new HashMap<>();
+//
+//        for(var guide : momijiMessage.getJob().getContentParsingGuides()) {
+//            String sourceName = guide.getSource();
+//
+//            List<Field> fields = guide.getFields();
+//
+//            List<Content> availableContents = momijiMessage.getJob().getContents();
+//
+//            Optional<Content> foundContent = availableContents.stream()
+//                    .filter(content ->
+//                            IS_SOURCE_NAME_CASE_SENSITIVE
+//                                    ? content.getName().equals(sourceName) // Case sensitive if true
+//                                    : content.getName().equalsIgnoreCase(sourceName) // Ignores case if false
+//                    )
+//                    .findFirst();
+//
+//            if(foundContent.isEmpty()) throw new NoSuchFieldException("No content with such name: " + sourceName);
+//
+//            Content content = foundContent.get();
+//
+//            HashMap<String, Object> outputFields = contentExtractorFactory
+//                    .getContentExtractor(content.getContentType())
+//                    .extract(content.getContent(), fields);
+//
+//            extractedFields.putAll(outputFields);
+//
+//        }
+//
+//        extractedFields.entrySet().forEach(System.out::println);
+//
+//        String output = new ObjectMapper().writeValueAsString(extractedFields);
+//
+//        messagePublisher.send(output);
+//    }
 
     public static MomijiMessage parseMessage(String message) throws JsonProcessingException {
 

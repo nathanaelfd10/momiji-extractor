@@ -12,7 +12,7 @@ import java.util.List;
 public class ContentParsingGuide {
 
     private String source;
-    private ContentType contentType;
+    private FormatType contentType;
     private List<Field> fields;
 
 }

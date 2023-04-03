@@ -17,14 +17,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class WoodChipperConfiguration {
 
-	public static final String INPUT_QUEUE_NAME = "wood-chipper";
+	// Disconnected from Cloud: Not publishing to Cloud Pub/Sub
+	public static final boolean IS_RUN_DISCONNECTED = System.getenv("run-disconnected") != null;
 
-	public static final String OUTPUT_QUEUE_NAME = "next";
-
-	public static final String OUTPUT_FAIL_QUEUE_NAME = "wood-chipper-fail";
+	public static final String INPUT_QUEUE_NAME = System.getProperty("input-queue-name") != null ?
+			System.getProperty("input-queue-name") : "wood-chipper";
 
 	@Bean
-	public Queue hello() {
+	public Queue queue() {
 		System.out.println("Reading from queue name: " + INPUT_QUEUE_NAME);
 
 		return new Queue(INPUT_QUEUE_NAME);
@@ -33,12 +33,6 @@ public class WoodChipperConfiguration {
 	@Bean
 	public AmqpHandler amqpHandler() {
 		return new AmqpHandler();
-	}
-
-	@Bean
-	public ParseContext parseContext() {
-		com.jayway.jsonpath.Configuration configuration = com.jayway.jsonpath.Configuration.defaultConfiguration();
-		return JsonPath.using(configuration);
 	}
 	
 }

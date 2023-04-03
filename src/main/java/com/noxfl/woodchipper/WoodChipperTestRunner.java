@@ -2,7 +2,7 @@ package com.noxfl.woodchipper;
 
 import com.noxfl.woodchipper.extractor.*;
 
-import com.noxfl.woodchipper.schema.ContentType;
+import com.noxfl.woodchipper.schema.FormatType;
 import com.noxfl.woodchipper.schema.Field;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,10 @@ public class WoodChipperTestRunner implements CommandLineRunner {
         this.configurableApplicationContext = configurableApplicationContext;
     }
 
-    private ContentExtractorFactory contentExtractorFactory;
+    private SiteContentExtractorFactory contentExtractorFactory;
 
     @Autowired
-    public void setContentExtractorFactoryImpl(ContentExtractorFactory contentExtractorFactory) {
+    public void setContentExtractorFactoryImpl(SiteContentExtractorFactory contentExtractorFactory) {
         this.contentExtractorFactory = contentExtractorFactory;
     }
 
@@ -61,7 +61,7 @@ public class WoodChipperTestRunner implements CommandLineRunner {
 
         System.out.println(jsonString);
 
-        ContentType contentType = ContentType.JSON;
+        FormatType contentType = FormatType.JSON;
 
         List<Field> parsingGuides = new ArrayList<>();
 

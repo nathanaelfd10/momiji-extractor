@@ -6,7 +6,6 @@ import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.TopicName;
 import com.noxfl.woodchipper.messaging.cloudpubsub.MessagePublisher;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -14,15 +13,19 @@ import java.util.concurrent.TimeUnit;
 
 public class MessagePublisherImpl implements MessagePublisher {
 
-    private final static String CLOUD_PROJECT_ID = "momiji-381514";
-    private final static String CLOUD_PUBSUB_TOPIC_ID = "";
-
     private final String projectId;
     private final String topicId;
 
     public MessagePublisherImpl(String projectId, String topicId) {
         this.projectId = projectId;
         this.topicId = topicId;
+
+        String initMessage = String.format("Cloud Pub/Sub environment set.\n" +
+                        " Project ID: %s\n " +
+                        "Topic: %s\n",
+                projectId, topicId);
+
+        System.out.println(initMessage);
     }
 
     public void send(String message) throws InterruptedException, ExecutionException, IOException {

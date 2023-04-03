@@ -1,24 +1,29 @@
 package com.noxfl.woodchipper.extractor.impl;
 
-import com.noxfl.woodchipper.extractor.ContentExtractor;
-import com.noxfl.woodchipper.extractor.ContentExtractorFactory;
-import com.noxfl.woodchipper.schema.ContentType;
+import com.noxfl.woodchipper.extractor.ProductExtractor;
+import com.noxfl.woodchipper.extractor.SiteContentExtractorFactory;
+import com.noxfl.woodchipper.extractor.SiteContentType;
+import com.noxfl.woodchipper.extractor.productlist.TokopediaCategoryJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ContentExtractorFactoryImpl implements ContentExtractorFactory {
+public class ContentExtractorFactoryImpl implements SiteContentExtractorFactory {
 
     @Autowired
-    private JsonContentExtractor jsonContentExtractorImpl;
+    private TokopediaCategoryJson tokopediaCategoryJson;
 
     @Override
-    public ContentExtractor getContentExtractor(ContentType contentType) {
-        switch (contentType) {
-            case JSON -> {
-                return jsonContentExtractorImpl;
+    public ProductExtractor getContentExtractor(SiteContentType siteContentType) {
+        switch (siteContentType) {
+//            case JSON -> {
+//                return jsonContentExtractorImpl;
+//            }
+            case TOKOPEDIA_CATEGORY_JSON -> {
+                return tokopediaCategoryJson;
             }
-            default -> throw new IllegalArgumentException("No processing function available for content type: " + contentType);
+
+            default -> throw new IllegalArgumentException("No processing function available for content type: " + siteContentType);
         }
     }
 
