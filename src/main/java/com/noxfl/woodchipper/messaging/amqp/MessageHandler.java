@@ -1,4 +1,4 @@
-package com.noxfl.woodchipper.extractor;
+package com.noxfl.woodchipper.messaging.amqp;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;

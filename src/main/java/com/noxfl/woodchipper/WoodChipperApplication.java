@@ -21,7 +21,14 @@ public class WoodChipperApplication {
 
 	@Profile("!test-runner")
 	@Bean
-	public WoodChipperRunner runner() { return new WoodChipperRunner(); }
+	public WoodChipperRunner runner() {
+		String messageStatus = WoodChipperConfiguration.IS_RUN_DISCONNECTED ?
+				"Not publishing to Cloud Pub/Sub because run-disconnected is set to true." :
+				"Publishing to Cloud Pub/Sub";
+		System.out.println("Status: " + messageStatus);
+
+		return new WoodChipperRunner();
+	}
 
 	@Bean
 	public MessagePublisher messagePublisher() {
@@ -32,8 +39,6 @@ public class WoodChipperApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WoodChipperApplication.class, args);
-//		if(WoodChipperConfiguration.IS_PRINT_ONLY)
-//			System.out.println("Not publishing to Cloud Pub/Sub because --print-only argument has been detected.");
 	}
 
 }

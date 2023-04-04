@@ -3,9 +3,7 @@
  */
 package com.noxfl.woodchipper;
 
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.ParseContext;
-import com.noxfl.woodchipper.messaging.amqp.AmqpHandler;
+import com.noxfl.woodchipper.messaging.amqp.impl.AmqpHandler;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +16,10 @@ import org.springframework.context.annotation.Configuration;
 public class WoodChipperConfiguration {
 
 	// Disconnected from Cloud: Not publishing to Cloud Pub/Sub
-	public static final boolean IS_RUN_DISCONNECTED = System.getenv("run-disconnected") != null;
+	public static final boolean IS_RUN_DISCONNECTED = System.getProperty("run-disconnected") != null
+			&& Boolean.parseBoolean(System.getProperty("run-disconnected"));
 
-	public static final String INPUT_QUEUE_NAME = System.getProperty("input-queue-name") != null ?
-			System.getProperty("input-queue-name") : "wood-chipper";
+	public static final String INPUT_QUEUE_NAME = "wood-chipper";
 
 	@Bean
 	public Queue queue() {

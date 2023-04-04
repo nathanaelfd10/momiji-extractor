@@ -20,10 +20,10 @@ public class Job {
     private PageType pageType;
     private int minPage;
     private int maxPage;
-    private FormatType formatType;
+    private ContentType contentType;
     private String splitPath;
     private boolean scrapeDetail;
     private List<ContentParsingGuide> contentParsingGuides;
-    private List<Content> contents;
+    private Content content;
 
 }

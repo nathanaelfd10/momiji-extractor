@@ -1,11 +1,11 @@
-package com.noxfl.woodchipper.extractor.impl;
+package com.noxfl.woodchipper.messaging.amqp.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noxfl.woodchipper.WoodChipperConfiguration;
 import com.noxfl.woodchipper.extractor.SiteContentExtractorFactory;
-import com.noxfl.woodchipper.extractor.MessageHandler;
+import com.noxfl.woodchipper.messaging.amqp.MessageHandler;
 import com.noxfl.woodchipper.extractor.SiteContentType;
 import com.noxfl.woodchipper.messaging.cloudpubsub.MessagePublisher;
 import com.noxfl.woodchipper.schema.*;
@@ -31,7 +31,7 @@ public class MessageHandlerImpl implements MessageHandler {
         this.siteContentExtractorFactory = siteContentExtractorFactory;
     }
 
-    private SiteContentType getSiteContentType(String siteName, PageType pageType, FormatType formatType) {
+    private SiteContentType getSiteContentType(String siteName, PageType pageType, ContentType formatType) {
         // WARNING: Naming order is crucial.
         // The naming in this app is: siteName + pageType + contentType.
         String siteContentTypeString = Arrays.stream(new String[] { siteName, pageType.toString(), formatType.toString() })
@@ -41,7 +41,7 @@ public class MessageHandlerImpl implements MessageHandler {
         return SiteContentType.valueOf(siteContentTypeString);
     }
 
-    private String hashMapToString(HashMap<String, Object> fields) throws JsonProcessingException {
+    private String hashMapToJsonString(HashMap<String, Object> fields) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(fields);
     }
 
@@ -55,16 +55,18 @@ public class MessageHandlerImpl implements MessageHandler {
         SiteContentType siteContentType = getSiteContentType(
                 job.getSite().getName(),
                 job.getPageType(),
-                job.getFormatType()
+                job.getContentType()
         );
 
         HashMap<String, Object> outputFields = siteContentExtractorFactory
                 .getContentExtractor(siteContentType)
-                .extract("content here"); // TODO
+                .extract(momijiMessage.getJob().getContent().getProduct());
 
         // TODO Add functions for extra fields
 
-        String outputMessage = hashMapToString(outputFields);
+        String outputMessage = hashMapToJsonString(outputFields);
+
+        System.out.println(outputMessage);
 
         if(!WoodChipperConfiguration.IS_RUN_DISCONNECTED) messagePublisher.send(outputMessage);
     }

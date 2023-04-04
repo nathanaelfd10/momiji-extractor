@@ -1,28 +1,15 @@
 /**
  *
  */
-package com.noxfl.woodchipper.messaging.amqp;
+package com.noxfl.woodchipper.messaging.amqp.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.Configuration;
 import com.noxfl.woodchipper.WoodChipperConfiguration;
-import com.noxfl.woodchipper.extractor.*;
-import com.noxfl.woodchipper.schema.Content;
-import com.noxfl.woodchipper.schema.Field;
-import com.noxfl.woodchipper.schema.MomijiMessage;
-import net.minidev.json.JSONObject;
-import org.springframework.amqp.core.Queue;
+import com.noxfl.woodchipper.messaging.amqp.MessageHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 /**
