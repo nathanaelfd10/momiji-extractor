@@ -2,7 +2,7 @@ package com.noxfl.woodchipper.extractor;
 
 import java.util.HashMap;
 
-public interface ProductExtractor {
+public interface Extractor {
 
     public HashMap<String, Object> extract(String content);
 

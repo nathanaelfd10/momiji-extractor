@@ -2,6 +2,6 @@ package com.noxfl.woodchipper.extractor;
 
 public interface SiteContentExtractorFactory {
 
-    public ProductExtractor getContentExtractor(SiteContentType siteContentType);
+    public Extractor getContentExtractor(SiteContentType siteContentType);
 
 }

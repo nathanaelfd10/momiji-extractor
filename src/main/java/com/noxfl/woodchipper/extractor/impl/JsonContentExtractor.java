@@ -6,7 +6,7 @@ package com.noxfl.woodchipper.extractor.impl;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import com.noxfl.woodchipper.schema.Field;
+import com.noxfl.woodchipper.schema.message.Field;
 
 import java.time.Instant;
 import java.util.HashMap;

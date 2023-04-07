@@ -1,5 +1,5 @@
 
-package com.noxfl.woodchipper.schema.tokopedia.category.productcard;
+package com.noxfl.woodchipper.schema.site.tokopedia.category.productcard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

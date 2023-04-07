@@ -2,9 +2,9 @@ package com.noxfl.woodchipper.extractor.productlist;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.noxfl.woodchipper.extractor.ProductExtractor;
-import com.noxfl.woodchipper.schema.tokopedia.category.productcard.LabelGroup;
-import com.noxfl.woodchipper.schema.tokopedia.category.productcard.TokopediaCategoryProductCard;
+import com.noxfl.woodchipper.extractor.Extractor;
+import com.noxfl.woodchipper.schema.site.tokopedia.category.productcard.LabelGroup;
+import com.noxfl.woodchipper.schema.site.tokopedia.category.productcard.TokopediaCategoryProductCard;
 import com.noxfl.woodchipper.util.UriUtils;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @Component
-public class TokopediaCategoryJson implements ProductExtractor {
+public class TokopediaCategoryJson implements Extractor {
 
     @Override
     public HashMap<String, Object> extract(String content) {

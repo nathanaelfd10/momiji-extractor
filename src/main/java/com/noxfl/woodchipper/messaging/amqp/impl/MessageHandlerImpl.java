@@ -8,11 +8,15 @@ import com.noxfl.woodchipper.extractor.SiteContentExtractorFactory;
 import com.noxfl.woodchipper.messaging.amqp.MessageHandler;
 import com.noxfl.woodchipper.extractor.SiteContentType;
 import com.noxfl.woodchipper.messaging.cloudpubsub.MessagePublisher;
-import com.noxfl.woodchipper.schema.*;
+import com.noxfl.woodchipper.schema.message.ContentType;
+import com.noxfl.woodchipper.schema.message.Job;
+import com.noxfl.woodchipper.schema.message.MomijiMessage;
+import com.noxfl.woodchipper.schema.message.PageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -20,6 +24,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class MessageHandlerImpl implements MessageHandler {
+
+    public static final boolean IS_ADD_UTC_TIMESTAMP = true;
 
     private final MessagePublisher messagePublisher;
 
@@ -31,10 +37,10 @@ public class MessageHandlerImpl implements MessageHandler {
         this.siteContentExtractorFactory = siteContentExtractorFactory;
     }
 
-    private SiteContentType getSiteContentType(String siteName, PageType pageType, ContentType formatType) {
+    private SiteContentType getSiteContentType(String siteName, PageType pageType, ContentType contentType) {
         // WARNING: Naming order is crucial.
         // The naming in this app is: siteName + pageType + contentType.
-        String siteContentTypeString = Arrays.stream(new String[] { siteName, pageType.toString(), formatType.toString() })
+        String siteContentTypeString = Arrays.stream(new String[] { siteName, pageType.toString(), contentType.toString() })
                 .map(String::toUpperCase)
                 .collect(Collectors.joining("_"));
 
@@ -62,7 +68,12 @@ public class MessageHandlerImpl implements MessageHandler {
                 .getContentExtractor(siteContentType)
                 .extract(momijiMessage.getJob().getContent().getProduct());
 
+        if(IS_ADD_UTC_TIMESTAMP) outputFields.put("timestamp", Instant.now().toString());
+
         // TODO Add functions for extra fields
+        job.getContent().getExtras().forEach(extra -> {
+            outputFields.put(extra.getName(), extra.getContent());
+        });
 
         String outputMessage = hashMapToJsonString(outputFields);
 

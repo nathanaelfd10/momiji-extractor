@@ -1,4 +1,4 @@
-package com.noxfl.woodchipper.schema;
+package com.noxfl.woodchipper.schema.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +15,6 @@ public class Content {
 
     String url;
     String product;
-    List<ExtraContent> extra;
+    List<ExtraContent> extras;
 
 }

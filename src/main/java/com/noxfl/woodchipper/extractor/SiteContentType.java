@@ -3,5 +3,6 @@ package com.noxfl.woodchipper.extractor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum SiteContentType {
-    TOKOPEDIA_CATEGORY_JSON
+    TOKOPEDIA_CATEGORY_JSON,
+    BUKALAPAK_CATEGORY_HTML
 }

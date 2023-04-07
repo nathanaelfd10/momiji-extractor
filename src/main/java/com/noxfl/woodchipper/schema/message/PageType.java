@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.noxfl.woodchipper.schema;
+package com.noxfl.woodchipper.schema.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,4 +1,4 @@
-package com.noxfl.woodchipper.schema;
+package com.noxfl.woodchipper.schema.message;
 
 import lombok.*;
 
@@ -9,5 +9,5 @@ import lombok.*;
 @ToString
 public class ExtraContent {
     String name;
-    String content;
+    Object content;
 }

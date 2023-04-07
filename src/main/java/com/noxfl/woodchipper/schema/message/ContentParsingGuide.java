@@ -1,4 +1,4 @@
-package com.noxfl.woodchipper.schema;
+package com.noxfl.woodchipper.schema.message;
 
 import lombok.*;
 
