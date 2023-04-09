@@ -74,7 +74,7 @@ public class MessageHandlerImpl implements MessageHandler {
         job.getContent().getExtras().forEach(extra -> {
             outputFields.put(extra.getName(), extra.getContent());
         });
-
+        
         String outputMessage = hashMapToJsonString(outputFields);
 
         System.out.println(outputMessage);
